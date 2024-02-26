@@ -9,7 +9,7 @@ class Game():
 
         self.state = "menu"
         self.running = True
-        self.size = (500, 500)
+        self.size = (700, 700)
         self.screen = pygame.display.set_mode(self.size)
         self.screen.fill(constants.BLACK)
 
