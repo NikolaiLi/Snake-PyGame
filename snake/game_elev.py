@@ -6,7 +6,7 @@ import constants
 
 class Game():
     def __init__(self):
-
+        #Attributes about the games defaults
         self.state = "menu"
         self.running = True
         self.size = (700, 700)
@@ -17,7 +17,9 @@ class Game():
         self.menu_surface.fill((255,255,255,100))
 
         self.menu_items = {"Play":"game", "Settings":"settings"}
-        self.settings = ["Back"]
+        self.settings = ["Theme", "Back"]
+        self.themes = ["Dark", "Light"]
+        self.themestate = "Dark"
 
         self.isSingleplayer = True
         self.mode = "Easy"
@@ -93,11 +95,20 @@ class Game():
                     if setting_item.check_click(event.pos)[0]:
                         if setting_item.check_click(event.pos)[1] == "Back":
                             self.state = "menu"
+                        if setting_item.check_click(event.pos)[1] == "Theme":
+                            if self.themestate == "Dark":
+                                self.themestate = "Light"
+                            else:
+                                self.themestate = "Dark"
        
     def start_game(self, isSingleplayer = True, mode = "Easy"):
         self.isSingleplayer = isSingleplayer
         self.mode = mode
-        snake = Snake(self.screen, constants.WHITE, mode)
+        print(self.themestate)
+        if self.themestate == "Dark":
+            snake = Snake(self.screen, constants.WHITE, mode)
+        if self.themestate == "Light":
+            snake = Snake(self.screen, constants.BLACK, mode)
         
         self.players.append(snake)
         self.point = Point(self.screen, constants.RED)
@@ -135,12 +146,18 @@ class Game():
 
     def draw(self):
         
-        self.screen.fill(constants.BLACK)
-        if self.state == "game":
-            
-            for sprite in self.all_sprites:
-                sprite.draw(self.screen)
-
+        if self.themestate == "Dark":
+            self.screen.fill(constants.BLACK)
+            if self.state == "game":
+                for sprite in self.all_sprites:
+                    sprite.draw(self.screen)
+                    
+        if self.themestate == "Light":
+            self.screen.fill(constants.WHITE)
+            if self.state == "game":
+                for sprite in self.all_sprites:
+                    sprite.draw(self.screen)
+                    
         if self.state == "menu" or self.state == "menuStart":
             for sprite in self.all_sprites:
                 sprite.draw(self.screen)
