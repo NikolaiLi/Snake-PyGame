@@ -17,9 +17,12 @@ class Game():
         self.menu_surface.fill((255,255,255,100))
 
         self.menu_items = {"Play":"game", "Settings":"settings"}
-        self.settings = ["Theme", "Back"]
+        self.settings = ["Theme", "Difficulty", "Back"]
         self.themes = ["Dark", "Light"]
         self.themestate = "Dark"
+        self.difficulty = ["Easy", "Medium", "Hard"]
+        self.difficultystate = "Easy"
+        self.difficultycounter = 1
 
         self.isSingleplayer = True
         self.mode = "Easy"
@@ -100,15 +103,30 @@ class Game():
                                 self.themestate = "Light"
                             else:
                                 self.themestate = "Dark"
+                        if setting_item.check_click(event.pos)[1] == "Difficulty":
+                            if self.difficultycounter == len(self.difficulty):
+                                self.difficultycounter = 0
+                            
+                            self.difficultystate = self.difficulty[self.difficultycounter]
+                            self.difficultycounter += 1
+                        
+
        
     def start_game(self, isSingleplayer = True, mode = "Easy"):
         self.isSingleplayer = isSingleplayer
         self.mode = mode
         print(self.themestate)
+        print(self.difficultystate)
         if self.themestate == "Dark":
             snake = Snake(self.screen, constants.WHITE, mode)
         if self.themestate == "Light":
             snake = Snake(self.screen, constants.BLACK, mode)
+        if self.difficultystate == "Easy":
+            constants.FPS = 10
+        if self.difficultystate == "Medium":
+            constants.FPS = 15
+        if self.difficultystate == "Hard":
+            constants.FPS = 20
         
         self.players.append(snake)
         self.point = Point(self.screen, constants.RED)
