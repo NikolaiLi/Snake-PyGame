@@ -2,6 +2,7 @@ import pygame
 from snake import Snake
 from point import Point
 from menuButton import MenuButton
+from blocks import Blocks
 import constants
 
 class Game():
@@ -15,7 +16,7 @@ class Game():
 
         self.menu_surface = pygame.Surface((self.screen.get_width(), self.screen.get_height()), pygame.SRCALPHA)
         self.menu_surface.fill((255,255,255,100))
-
+        
         self.menu_items = {"Play":"game", "Settings":"settings"}
         self.settings = ["Theme", "Difficulty", "Back"]
         self.themes = ["Dark", "Light"]
@@ -127,12 +128,16 @@ class Game():
             constants.FPS = 15
         if self.difficultystate == "Hard":
             constants.FPS = 20
-        
+        blocks = Blocks(self.screen, (0,0))
+
         self.players.append(snake)
         self.point = Point(self.screen, constants.RED)
         self.all_sprites.add(snake)  
         self.all_sprites.add(self.point)
+        self.all_sprites.add(blocks)
 
+        
+    
     def reset_game(self):
         self.players = []
         self.point = None
@@ -155,7 +160,7 @@ class Game():
                 self.point.kill()  
                 self.point = Point(self.screen, constants.RED)
                 self.all_sprites.add(self.point)
-
+                
             if player.dead:
                 self.reset_game()
 
